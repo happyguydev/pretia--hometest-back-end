@@ -1,0 +1,9 @@
+{
+    email youremail@domain.com 
+}
+pretia.com {
+    reverse_proxy ghost:2368
+}
+www.pretia.com {
+    redir https://pretia.com{uri}
+}

@@ -1,0 +1,38 @@
+version: "3"
+services:
+  postgresql:
+    image: "postgres"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=pretia
+      - POSTGRES_PASSWORD=p8vsXwGDLzkrS3MC
+    ports:
+      - "4103:5432"
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/data:/data # Optional
+      - ./caddy/config:/config # Optional
+
+  jwt-api:
+    build: jwt-api
+    restart: unless-stopped
+    environment:
+      JWT_SECRET: k7AUFcjtTcBvvLBJHeuS9vrD5DwF9WLB
+    ports:
+      - "4101:4101"
+
+volumes:
+  database-data:

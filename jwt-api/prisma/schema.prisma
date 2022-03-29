@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  password  String?
+  username  String   @unique
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @db.Timestamptz(6)
+
+  @@map("users")
+}
+
+model Applist {
+  id          String        @id(map: "applists_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String?       @unique
+  description String?
+  type        enum_app_type @default(Static)
+
+  @@map("applist")
+}
+
+enum enum_app_type {
+  Static
+  Dynamic
+  SPA
+  MPA
+  Animated
+  CMS
+  Ecommerce
+  Portal
+  PWA
+}
